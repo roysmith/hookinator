@@ -16,7 +16,6 @@ function getQueue() {
 
 onMounted(() => {
   getQueue();
-  console.log(data.value)
 })
 </script>
 
