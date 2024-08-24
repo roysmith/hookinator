@@ -8,14 +8,14 @@ const data = ref(null);
 const error = ref(null);
 
 function getQueue() {
-  fetch(url)
-    .then((res) => res.json())
-    .then((json) => (data.value = json['query']['pages'][0]['revisions'][0]['slots']['main']['content']))
-    .catch((err) => (error.value = err))
-} 
+    fetch(url)
+        .then((res) => res.json())
+        .then((json) => (data.value = json['query']['pages'][0]['revisions'][0]['slots']['main']['content']))
+        .catch((err) => (error.value = err))
+}
 
 onMounted(() => {
-  getQueue();
+    getQueue();
 })
 </script>
 
@@ -23,14 +23,14 @@ onMounted(() => {
     <div class="queue">
         {{ data }}
     </div>
-  </template>
-  
-  <style>
-  @media (min-width: 1024px) {
+</template>
+
+<style>
+@media (min-width: 1024px) {
     .queue {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
     }
-  }
-  </style>
+}
+</style>
