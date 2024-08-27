@@ -12,17 +12,34 @@ url.search = new URLSearchParams({
     'formatversion': '2'
 });
 
-const data = ref(null);
-const lines = ref(null);
+const hooks = ref(null);
 const error = ref(null);
 
 function getQueue() {
     fetch(url)
-        .then((res) => res.json())
-        .then((json) => (data.value = json['parse']['wikitext']))
-        .then((data) => (lines.value = data.split('\n')))
+        .then((response) => response.json())
+        .then((data) => {
+            const wikitext = data['parse']['wikitext'];
+            let inHooks = false;
+            hooks.value = Array();
+            for (const line of wikitext.split('\n')) {
+                if (line == '<!--HooksEnd-->') {
+                    inHooks = false;
+                    continue;
+                }
+                if (inHooks) {
+                    if (line[0] == '*') {
+                        hooks.value.push(line);
+                    }
+                    continue;
+                }
+                if (line == '<!--Hooks-->') {
+                    inHooks = true;
+                    continue;
+                }
+            }
+        })
         .catch((err) => (error.value = err));
-    
 }
 
 onMounted(() => {
@@ -32,7 +49,11 @@ onMounted(() => {
 
 <template>
     <div class="queue">
-        {{ lines }}
+        <ol>
+            <li v-for="hook in hooks">
+                {{ hook }}
+            </li>
+        </ol>
     </div>
 </template>
 
