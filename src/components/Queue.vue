@@ -10,7 +10,7 @@ const error = ref(null);
 function getQueue() {
     fetch(url)
         .then((res) => res.json())
-        .then((json) => (data.value = json))
+        .then((json) => (data.value = json['query']['pages'][0]['revisions'][0]['slots']['main']['content']))
         .catch((err) => (error.value = err))
 }
 
@@ -21,7 +21,7 @@ onMounted(() => {
 
 <template>
     <div class="queue">
-        {{ data['query']['pages'][0]['revisions'][0]['slots']['main']['content']  }}
+        {{ data }}
     </div>
 </template>
 
