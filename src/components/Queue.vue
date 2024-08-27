@@ -15,13 +15,16 @@ url.search = new URLSearchParams({
 });
 
 const data = ref(null);
+const lines = ref(null);
 const error = ref(null);
 
 function getQueue() {
     fetch(url)
         .then((res) => res.json())
         .then((json) => (data.value = json['parse']['wikitext']))
-        .catch((err) => (error.value = err))
+        .then((data) => (lines.value = data.split('\n')))
+        .catch((err) => (error.value = err));
+    
 }
 
 onMounted(() => {
@@ -31,7 +34,7 @@ onMounted(() => {
 
 <template>
     <div class="queue">
-        {{ data }}
+        {{ lines }}
     </div>
 </template>
 
