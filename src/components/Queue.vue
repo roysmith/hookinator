@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-
-
 const queueTitle = 'Template:Did you know/Queue/5'
 const url = new URL('https://en.wikipedia.org/w/api.php');
 url.search = new URLSearchParams({
