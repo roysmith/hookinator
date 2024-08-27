@@ -1,8 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+
+
 const queueTitle = 'Template:Did you know/Queue/5'
-const url = 'https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=revisions&formatversion=2&rvprop=content&rvslots=*&titles=' + queueTitle
+const url = new URL('https://en.wikipedia.org/w/api.php');
+url.search = new URLSearchParams({
+    'origin': '*',
+    'action': 'parse',
+    'page': queueTitle,
+    'prop': 'wikitext',
+    'format': 'json',
+    'formatversion': '2'
+});
 
 const data = ref(null);
 const error = ref(null);
@@ -10,7 +20,7 @@ const error = ref(null);
 function getQueue() {
     fetch(url)
         .then((res) => res.json())
-        .then((json) => (data.value = json['query']['pages'][0]['revisions'][0]['slots']['main']['content']))
+        .then((json) => (data.value = json['parse']['wikitext']))
         .catch((err) => (error.value = err))
 }
 
